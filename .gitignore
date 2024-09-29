@@ -1,0 +1,37 @@
+# created by virtualenv automatically
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE files
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.vscode/
+
+# Log files
+*.log
+
+# Data files
+*.csv
+*.json
+
+# Flask instance folder
+instance/
+*.db
+*.sqlite
+
+# Static files (if you don't want to track generated plots)
+static/inertia_plot.png
+static/silhouette_plot.png
+
+# Environment variables
+.env

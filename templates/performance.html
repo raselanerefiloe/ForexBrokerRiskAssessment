@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Performance Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        img {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">Model Performance Report</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for metric in performance %}
+            <tr>
+                <td>{{ metric.Metric }}</td>
+                <td>{{ metric.Value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="text-center">Visualizations</h2>
+    <img src="{{ url_for('static', filename='inertia_plot.png') }}" alt="Inertia Plot">
+    <img src="{{ url_for('static', filename='silhouette_plot.png') }}" alt="Silhouette Plot">
+</div>
+
+</body>
+</html>

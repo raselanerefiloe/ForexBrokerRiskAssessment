@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Risk Levels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            th {
+                display: none;
+            }
+
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Broker Risk Levels</h1>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('performance') }}" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Performance Report</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Rating</th>
+                <th>Regulation Status</th>
+                <th>Risk Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for broker in brokers %}
+            <tr>
+                <td data-label="Name">{{ broker['Name'] }}</td>
+                <td data-label="Link"><a href="{{ broker['Link'] }}">{{ broker['Link'] }}</a></td>
+                <td data-label="Rating">{{ broker['Rating'] }}</td>
+                <td data-label="Regulation Status">{{ 'YES' if broker['Regulation Status'] == 1 else 'No' }}</td>
+                <td data-label="Risk Level">{{ broker['Risk Level'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
