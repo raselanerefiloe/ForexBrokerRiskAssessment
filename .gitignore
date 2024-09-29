@@ -21,7 +21,7 @@ venv/
 *.log
 
 # Data files
-*.csv
+#*.csv
 *.json
 
 # Flask instance folder
