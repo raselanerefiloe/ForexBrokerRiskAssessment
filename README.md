@@ -6,10 +6,10 @@ A machine learning project designed to assess and categorize the risk levels of 
 
 ## 📖 Table of Contents
 - [Features](#features)
-- [Getting Started](#Getting Started)
+- [Getting Started](#getting_started)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Performance Metrics](#Performance Metrics)
+- [Performance Metrics](#performance_metrics)
 - [Contributing](#contributing)
 
 ## 🌟 Features
