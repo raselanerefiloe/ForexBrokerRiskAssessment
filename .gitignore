@@ -30,8 +30,7 @@ instance/
 *.sqlite
 
 # Static files (if you don't want to track generated plots)
-static/inertia_plot.png
-static/silhouette_plot.png
+
 
 # Environment variables
 .env
