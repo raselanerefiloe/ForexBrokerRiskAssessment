@@ -15,7 +15,7 @@ import os
 app = Flask(__name__)
 
 # Load the saved KMeans model, scaler, and label encoder
-kmeans = load('model.joblib')  # Load the KMeans model
+kmeans = load('kmeans_model.joblib')  # Load the KMeans model
 scaler = load('scaler.joblib')  # Load the scaler used for training
 le = load('label_encoder.joblib')  # Load the label encoder used for training
 

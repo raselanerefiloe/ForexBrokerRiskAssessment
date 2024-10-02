@@ -1,53 +1,40 @@
-from flask import Flask, render_template
 import pandas as pd
-from joblib import load
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+import joblib
 
-app = Flask(__name__)
+# Load the data
+data = pd.read_csv('brokers_data.csv')
 
-# Load the saved KMeans model, scaler, and label encoder
-kmeans = load('model.joblib')  # Load the KMeans model
-scaler = load('scaler.joblib')  # Load the scaler used for training
-le = load('label_encoder.joblib')  # Load the label encoder used for training
+# Preprocess data
+data['Regulation Status'] = data['Regulation Status'].map({'YES': 1, 'No': 0})
+data['Rating'] = pd.to_numeric(data['Rating'], errors='coerce').fillna(0)
 
+# Encode the regulation details
+le = LabelEncoder()
+data['Regulation Details'] = le.fit_transform(data['Regulation Details'].astype(str))
 
-# Preprocess and predict using the loaded model
-def preprocess_and_predict(data):
-    # Preprocess data in the same way as during training
-    data['Regulation Status'] = data['Regulation Status'].map({'YES': 1, 'No': 0})
-    data['Rating'] = pd.to_numeric(data['Rating'], errors='coerce').fillna(0)
+# Select features for clustering
+features = data[['Regulation Status', 'Regulation Details', 'Rating']]
 
-    # Encode the regulation details using the loaded LabelEncoder
-    data['Regulation Details'] = le.transform(data['Regulation Details'].astype(str))
+# Normalize the features
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(features)
 
-    # Select features for clustering
-    features = data[['Regulation Status', 'Regulation Details', 'Rating']]
+# Apply K-means
+kmeans = KMeans(n_clusters=2, random_state=42)
+data['Risk Category'] = kmeans.fit_predict(features_scaled)
 
-    # Normalize the features using the loaded scaler
-    features_scaled = scaler.transform(features)
+# Interpret clusters
+# Assuming cluster 0 is low risk and cluster 1 is high risk based on analysis
+data['Risk Level'] = data['Risk Category'].map({0: 'Low Risk', 1: 'High Risk'})
 
-    # Predict risk categories using the loaded KMeans model
-    data['Risk Category'] = kmeans.predict(features_scaled)
+# Display the results
+print(data[['Name', 'Link', 'Rating', 'Risk Level']])
 
-    # Map risk categories to risk levels
-    data['Risk Level'] = data['Risk Category'].map({0: 'Low Risk', 1: 'High Risk'})
+# Save the model, scaler, and label encoder with .joblib extension
+joblib.dump(kmeans, 'kmeans_model.joblib')
+joblib.dump(scaler, 'scaler.joblib')
+joblib.dump(le, 'label_encoder.joblib')
 
-    return data
-
-
-@app.route('/')
-def brokers():
-    # Load new data (the broker data you want to display)
-    brokers_data = pd.read_csv('brokers_data.csv')
-
-    # Preprocess the data and predict risk levels
-    brokers_data = preprocess_and_predict(brokers_data)
-
-    # Pass data to the template for rendering
-    return render_template(
-        'brokers.html',
-        brokers=brokers_data[['Name', 'Link', 'Rating', 'Regulation Status', 'Risk Level']].to_dict(orient='records')
-    )
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+print("Model, scaler, and label encoder saved successfully with .joblib extension.")
